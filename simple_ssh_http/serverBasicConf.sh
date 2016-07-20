@@ -24,14 +24,15 @@ IPV6="ipv6_close"
 # ============================================== #
 
 
+<<<<<<< HEAD
 
 # ------ set  screenrc
-if [ ! -e "$SCREEN_FILE" ]; then
+if [ ! -e "$SCREEN_FILE"] ; then
     echo "ScreenRc does not exist. Creating File"
     touch "$SCREEN_FILE"
+    echo $basic_screen > .screenrc
 fi
 
-echo $basic_screen > .screenrc
 if [ $? -ne ]; then 
 	echo "Fail to set screenrc configuration"
 	exit

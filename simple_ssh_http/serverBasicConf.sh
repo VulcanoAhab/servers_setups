@@ -56,9 +56,6 @@ su -u delphi
 echo "[•] Updating apt-get. Sudo password will be necessary"
 sudo apt-get update
 
-#install git
-echo "[•]  Git instalation is next"
-sudo apt-get install git
 
 #python
 echo "[•] Installing python"

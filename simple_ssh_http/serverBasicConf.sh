@@ -24,7 +24,6 @@ IPV6="ipv6_close"
 # ============================================== #
 
 
-<<<<<<< HEAD
 
 # ------ set  screenrc
 if [ ! -e "$SCREEN_FILE"] ; then

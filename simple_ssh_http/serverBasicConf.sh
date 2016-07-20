@@ -24,15 +24,18 @@ IPV6="ipv6_close"
 # ============================================== #
 
 
+
 # ------ set  screenrc
-if [ ! -e "$SCREEN_FILE"] ; then
+if [ ! -e "$SCREEN_FILE" ]; then
     echo "ScreenRc does not exist. Creating File"
     touch "$SCREEN_FILE"
 fi
 
 echo $basic_screen > .screenrc
-if [ $? -ne ]; then echo "Fail to set screenrc configuration"
-
+if [ $? -ne ]; then 
+	echo "Fail to set screenrc configuration"
+	exit
+fi
 
 # ---- create sudoer user
 echo "Creating user..."

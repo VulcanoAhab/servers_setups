@@ -106,3 +106,5 @@ pip3 install -r requirements.txt
 python manage.py migrate
 deactivate
 
+#final permissions
+chown -R $USER webapps

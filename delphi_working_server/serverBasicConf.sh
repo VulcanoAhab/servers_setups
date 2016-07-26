@@ -83,6 +83,9 @@ echo "[•] Installing python"
 apt-get install python3 libpq-dev python3-dev libxml2-dev libxslt1-dev
 apt-get install python3-pip libxml2 build-essential autoconf libtool
 
+#rabbitmq-server
+apt-get install rabbitmq-server
+
 #virtual env
 pip3 install virtualenv
 

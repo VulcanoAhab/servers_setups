@@ -23,65 +23,80 @@ IPV6="ipv6_close"
 #                   work                         #
 # ============================================== #
 
+# ------ helpes
+function test_sucess() {
+
+        test_name=$1
+        if [ $? -ne 0 ] ; then
+                echo "[-] Fail $test_name"
+        exit
+        fi
+}
 
 
 # ------ set  screenrc
-if [ ! -e "$SCREEN_FILE"] ; then
-    echo "ScreenRc does not exist. Creating File"
-    touch "$SCREEN_FILE"
-    echo $basic_screen > .screenrc
+if [ ! -e "$SCREEN_FILE" ] ; then
+        echo "[+] ScreenRc does not exist. Creating File"
+        touch "$SCREEN_FILE"
+        echo "$basic_screen" > .screenrc
+        echo "[+] ScreenRc has being created."
 fi
 
-if [ $? -ne ]; then 
-	echo "Fail to set screenrc configuration"
-	exit
+test_sucess "to set screenrc configuration"
+
+echo -n "[+] Creating user. Please insert  a username: "
+read USER
+
+# -- test user
+id $USER
+id_result=$?
+
+# --- test for users
+if [ $id_result -eq 0 ]
+        then
+        echo -n "User $USER already exists. Do you want to continue?[y|n]: "
+        read want
+        if [ $want == "n" ]
+                then exit
+        fi
+# --- create new user
+else
+        # -- create user
+        groupadd --system $USER
+        useradd --system --gid $USER --shell /bin/bash --home /$USER/django_delphi $USER
+        test_sucess "to create user"
+        passwd $USER
+        test_sucess "to set password"
+
 fi
-
-# ---- create sudoer user
-echo "Creating user..."
-groupadd --system webapps
-useradd --system --gid webapps --shell /bin/bash --home /webapps/django_delphi delphi
-if [ $? -ne ]; then 
-	echo "Fail to create user"
-	exist
-fi
-
-
-# --- change to user
-echo "Changing  user"
-su -u delphi
-
 
 # -------- update apt-get
 echo "[•] Updating apt-get. Sudo password will be necessary"
-sudo apt-get update
-
+apt-get update
 
 #python
 echo "[•] Installing python"
-sudo apt-get install python3 libpq-dev python3-dev
-sudo apt-get install python3-pip
+apt-get install python3 libpq-dev python3-dev libxml2-dev libxslt1-dev
+apt-get install python3-pip libxml2 build-essential autoconf libtool
 
-pip install python3-virtualenv
+#virtual env
+pip3 install virtualenv
 
 #prepare for virtual env
-sudo mkdir -p /webapps/django_delphi/
-sudo chown delphi /webapps/django_delphi/
+mkdir -p /webapps/django_delphi/
+chown $USER /webapps/django_delphi/
 
 #create virtual env
 cd /webapps/django_delphi/
 virtualenv .
 
 #django and gunicorn
-pip install gunicorn
+pip3 install gunicorn
 
 #clone project
 git clone https://github.com/VulcanoAhab/delphi.git
 
 #pip requirements and start gunicorn
-cd delphi
-pip install -r requirements.txt
-gunicorn delphi.wsgi:application --bind 127.0.0.1:8000
-
-
-
+cd /webapps/django_delphi/delphi
+pip3 install -r requirements.txt
+python manage.py migrate

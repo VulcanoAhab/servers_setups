@@ -10,6 +10,9 @@
  
  # Allow SSH connections.
  -A INPUT -p tcp --dport 22 -m state --state NEW -j ACCEPT
+
+ # Allow crawler connection.
+ -A INPUT -p tcp --dport 8000 -m state --state NEW -j ACCEPT
  
  # Allow inbound traffic from established connections.
  # This includes ICMP error returns.

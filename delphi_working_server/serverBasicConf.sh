@@ -99,6 +99,10 @@ pip3 install gunicorn
 git clone https://github.com/VulcanoAhab/delphi.git
 
 #pip requirements and migrate / sync db
+cd /webapps/django_delphi/
+source bin/activate
 cd /webapps/django_delphi/delphi
 pip3 install -r requirements.txt
 python manage.py migrate
+deactivate
+

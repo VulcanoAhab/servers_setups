@@ -67,6 +67,8 @@ else
         groupadd --system $USER
         useradd --system --gid $USER --shell /bin/bash --home /$USER/django_delphi $USER
         test_sucess "to create user"
+        adduser $USER sudo
+        test_sucess "to add user to sudo group"
         passwd $USER
         test_sucess "to set password"
 
@@ -105,6 +107,9 @@ cd /webapps/django_delphi/delphi
 pip3 install -r requirements.txt
 python manage.py migrate
 deactivate
+
+#user screen
+echo "$basic_screen" > /webapps/.screenrc
 
 #final permissions
 chown -R $USER webapps
